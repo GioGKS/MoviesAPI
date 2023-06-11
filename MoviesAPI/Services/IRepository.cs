@@ -7,6 +7,7 @@ namespace MoviesAPI.Services
 	{
 		Task<List<Genre>> GetAllGenres();
         Genre GetGenreById(int Id);
+        public void AddGenre(Genre genre);
     }
 
 }
