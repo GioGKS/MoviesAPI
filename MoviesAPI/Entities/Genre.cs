@@ -1,19 +1,22 @@
-﻿using System;
+﻿using MoviesAPI.Validations;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using MoviesAPI.Validations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MoviesAPI.Entities
 {
     public class Genre : IValidatableObject
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "This Field with name {0} is required")]
+        [Required(ErrorMessage = "The field with name {0} is required")]
         [StringLength(10)]
-        //[FirstLetterUppercase]
+        [FirstLetterUppercase]
         public string Name { get; set; }
 
         //[Range(18, 120)]
-        //public int age { get; set; }
+        //public int Age { get; set; }
         //[CreditCard]
         //public string CreditCard { get; set; }
         //[Url]
@@ -24,6 +27,7 @@ namespace MoviesAPI.Entities
             if (!string.IsNullOrEmpty(Name))
             {
                 var firstLetter = Name[0].ToString();
+
                 if (firstLetter != firstLetter.ToUpper())
                 {
                     yield return new ValidationResult("First letter should be uppercase", new string[] { nameof(Name) });
@@ -32,4 +36,3 @@ namespace MoviesAPI.Entities
         }
     }
 }
-
