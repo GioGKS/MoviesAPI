@@ -14,7 +14,5 @@ namespace MoviesAPI.Entities
         [StringLength(50)]
         [FirstLetterUppercase]
         public string Name { get; set; }
-
-        
     }
 }

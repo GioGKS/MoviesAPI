@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MoviesAPI.APIBehavior;
 using MoviesAPI.Filters;
 using System;
 using System.Collections.Generic;
@@ -57,8 +58,8 @@ namespace MoviesAPI
             services.AddControllers(options =>
             {
                 options.Filters.Add(typeof(MyExceptionFilter));
-            });
-
+                options.Filters.Add(typeof(ParseByRequest));
+            }).ConfigureApiBehaviorOptions(BadRequestBehavior.Parse);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
