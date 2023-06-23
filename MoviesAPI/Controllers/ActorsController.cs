@@ -6,6 +6,7 @@ using MoviesAPI.DTO;
 
 namespace MoviesAPI.Controllers
 {
+    [Route("api/actors")]
 	[ApiController]
 	public class ActorsController : ControllerBase
 	{
@@ -18,25 +19,25 @@ namespace MoviesAPI.Controllers
 			this.mapper = mapper;
 		}
 
-		[HttpGet]
-		public async Task<ActionResult<List<ActorDTO>>> Get()
+        [HttpGet]
+        public async Task<ActionResult<List<ActorDTO>>> Get()
 		{
 			var actors = await context.Actors.ToListAsync();
 			return mapper.Map<List<ActorDTO>>(actors);
 		}
 
-		[HttpGet("{id:int")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<ActorDTO>> Get(int id)
-		{
-			var actor = await context.Actors.FirstOrDefaultAsync(x => x.Id == id);
+        {
+            var actor = await context.Actors.FirstOrDefaultAsync(x => x.Id == id);
 
-			if (actor == null)
-			{
-				return NotFound();
-			}
+            if (actor == null)
+            {
+                return NotFound();
+            }
 
-			return mapper.Map<ActorDTO>(actor);
-		}
+            return mapper.Map<ActorDTO>(actor);
+        }
 
 		[HttpPost]
 		public async Task<ActionResult> Post([FromForm] ActorCreationDTO actorCreationDTO)
@@ -52,8 +53,8 @@ namespace MoviesAPI.Controllers
 
         }
 
-		[HttpDelete("{id:int")]
-		public async Task<ActionResult> Delete(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
 		{
             var actor = await context.Actors.FirstOrDefaultAsync(x => x.Id == id);
 
