@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoviesAPI;
-using NetTopologySuite.Geometries;
 
 #nullable disable
 
@@ -68,28 +67,6 @@ namespace MoviesAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
-                });
-
-            modelBuilder.Entity("MoviesAPI.Entities.MovieTheater", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<Point>("Location")
-                        .IsRequired()
-                        .HasColumnType("geography");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(75)
-                        .HasColumnType("nvarchar(75)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MovieTheaters");
                 });
 #pragma warning restore 612, 618
         }
