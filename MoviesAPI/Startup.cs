@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MoviesAPI.APIBehavior;
 using MoviesAPI.Filters;
+using MoviesAPI.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -57,6 +58,9 @@ namespace MoviesAPI
 
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddScoped<IFileStorageService, InAppStorageService>();
+            services.AddHttpContextAccessor();
+
 
             services.AddControllers(options =>
             {
@@ -77,6 +81,8 @@ namespace MoviesAPI
             }
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
 
             app.UseRouting();
 
