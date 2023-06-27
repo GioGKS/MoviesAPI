@@ -1,13 +1,15 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MoviesAPI.APIBehavior
 {
-	public class BadRequestBehavior
-	{
-		public static void Parse(ApiBehaviorOptions options)
-		{
+    public class BadRequestsBehavior
+    {
+        public static void Parse(ApiBehaviorOptions options)
+        {
             options.InvalidModelStateResponseFactory = context =>
             {
                 var response = new List<string>();
@@ -20,8 +22,6 @@ namespace MoviesAPI.APIBehavior
                 }
                 return new BadRequestObjectResult(response);
             };
-           
-		}
-	}
+        }
+    }
 }
-

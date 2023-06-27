@@ -1,17 +1,23 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MoviesAPI.Helpers
 {
-	public class InAppStorageService : IFileStorageService
-	{
+    public class InAppStorageService : IFileStorageService
+    {
         private readonly IWebHostEnvironment env;
         private readonly IHttpContextAccessor httpContextAccessor;
 
-		public InAppStorageService(IWebHostEnvironment env, IHttpContextAccessor httpContextAccessor)
-		{
+        public InAppStorageService(IWebHostEnvironment env, IHttpContextAccessor httpContextAccessor)
+        {
             this.env = env;
             this.httpContextAccessor = httpContextAccessor;
-		}
+        }
 
         public Task DeleteFile(string fileRoute, string containerName)
         {
@@ -57,9 +63,8 @@ namespace MoviesAPI.Helpers
             }
 
             var url = $"{httpContextAccessor.HttpContext.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}";
-            var routerForDB = Path.Combine(url, containerName, fileName).Replace("\\", "/");
-            return routerForDB;
+            var routeForDB = Path.Combine(url, containerName, fileName).Replace("\\", "/");
+            return routeForDB;
         }
     }
 }
-

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MoviesAPI.DTO;
 using MoviesAPI.DTOs;
 using MoviesAPI.Entities;
 using MoviesAPI.Helpers;
@@ -48,16 +47,16 @@ namespace MoviesAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(MovieTheaterCreationDTO movieTheaterCreationDTO)
+        public async Task<ActionResult> Post(MovieTheaterCreationDTO movieCreationDTO)
         {
-            var movieTheater = mapper.Map<MovieTheater>(movieTheaterCreationDTO);
+            var movieTheater = mapper.Map<MovieTheater>(movieCreationDTO);
             context.Add(movieTheater);
             await context.SaveChangesAsync();
             return NoContent();
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(int id, MovieTheaterCreationDTO movieTheaterCreationDTO)
+        public async Task<ActionResult> Put(int id, MovieTheaterCreationDTO movieCreationDTO)
         {
             var movieTheater = await context.MovieTheaters.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -66,7 +65,7 @@ namespace MoviesAPI.Controllers
                 return NotFound();
             }
 
-            movieTheater = mapper.Map(movieTheaterCreationDTO, movieTheater);
+            movieTheater = mapper.Map(movieCreationDTO, movieTheater);
             await context.SaveChangesAsync();
             return NoContent();
         }

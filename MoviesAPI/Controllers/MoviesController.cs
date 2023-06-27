@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MoviesAPI.DTO;
 using MoviesAPI.DTOs;
 using MoviesAPI.Entities;
 using MoviesAPI.Helpers;

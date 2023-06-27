@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,6 +40,15 @@ namespace MoviesAPI
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
             sqlOptions => sqlOptions.UseNetTopologySuite()));
 
+            services.AddScoped<IFileStorageService, InAppStorageService>();
+            services.AddHttpContextAccessor();
+
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(MyExceptionFilter));
+                options.Filters.Add(typeof(ParseBadRequest));
+            }).ConfigureApiBehaviorOptions(BadRequestsBehavior.Parse);
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
             services.AddSwaggerGen(c =>
@@ -53,14 +61,10 @@ namespace MoviesAPI
                 var frontendURL = Configuration.GetValue<string>("frontend_url");
                 options.AddDefaultPolicy(builder =>
                 {
-                    builder.WithOrigins(frontendURL)
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .WithExposedHeaders(new string[] { "totalAmountOfRecords" });
+                    builder.WithOrigins(frontendURL).AllowAnyMethod().AllowAnyHeader()
+                        .WithExposedHeaders(new string[] { "totalAmountOfRecords" });
                 });
             });
-
-            services.AddAutoMapper(typeof(Startup));
 
             services.AddSingleton(provider => new MapperConfiguration(config =>
             {
@@ -71,22 +75,11 @@ namespace MoviesAPI
             services.AddSingleton<GeometryFactory>(NtsGeometryServices
                 .Instance.CreateGeometryFactory(srid: 4326));
 
-
-            services.AddScoped<IFileStorageService, InAppStorageService>();
-            services.AddHttpContextAccessor();
-
-
-            services.AddControllers(options =>
-            {
-                options.Filters.Add(typeof(MyExceptionFilter));
-                options.Filters.Add(typeof(ParseByRequest));
-            }).ConfigureApiBehaviorOptions(BadRequestBehavior.Parse);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

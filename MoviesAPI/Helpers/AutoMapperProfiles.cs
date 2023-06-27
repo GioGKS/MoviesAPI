@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using MoviesAPI.DTO;
 using MoviesAPI.DTOs;
 using MoviesAPI.Entities;
 using NetTopologySuite.Geometries;

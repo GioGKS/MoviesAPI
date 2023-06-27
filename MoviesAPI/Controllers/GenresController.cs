@@ -1,9 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MoviesAPI.DTO;
+using Microsoft.Extensions.Logging;
+using MoviesAPI.DTOs;
 using MoviesAPI.Entities;
+using MoviesAPI.Filters;
 using MoviesAPI.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MoviesAPI.Controllers
 {
@@ -15,7 +21,9 @@ namespace MoviesAPI.Controllers
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
 
-        public GenresController(ILogger<GenresController> logger, ApplicationDbContext context,IMapper mapper)
+        public GenresController(ILogger<GenresController> logger,
+            ApplicationDbContext context,
+            IMapper mapper)
         {
             this.logger = logger;
             this.context = context;
@@ -27,14 +35,18 @@ namespace MoviesAPI.Controllers
         {
             var queryable = context.Genres.AsQueryable();
             await HttpContext.InsertParametersPaginationInHeader(queryable);
-            logger.LogInformation("Getting all the genres");
-
             var genres = await queryable.OrderBy(x => x.Name).Paginate(paginationDTO).ToListAsync();
             return mapper.Map<List<GenreDTO>>(genres);
-            
         }
 
-        [HttpGet("{Id:int}")] // api/genres/example
+        [HttpGet("all")] // api/genres
+        public async Task<ActionResult<List<GenreDTO>>> Get()
+        {
+            var genres = await context.Genres.OrderBy(x => x.Name).ToListAsync();
+            return mapper.Map<List<GenreDTO>>(genres);
+        }
+
+        [HttpGet("{Id:int}")]
         public async Task<ActionResult<GenreDTO>> Get(int Id)
         {
             var genre = await context.Genres.FirstOrDefaultAsync(x => x.Id == Id);
@@ -57,7 +69,7 @@ namespace MoviesAPI.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(int id,[FromBody] GenreCreationDTO genreCreationDTO)
+        public async Task<ActionResult> Put(int id, [FromBody] GenreCreationDTO genreCreationDTO)
         {
             var genre = await context.Genres.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -69,7 +81,6 @@ namespace MoviesAPI.Controllers
             genre = mapper.Map(genreCreationDTO, genre);
             await context.SaveChangesAsync();
             return NoContent();
-            
         }
 
         [HttpDelete("{id:int}")]
@@ -85,7 +96,6 @@ namespace MoviesAPI.Controllers
             context.Remove(new Genre() { Id = id });
             await context.SaveChangesAsync();
             return NoContent();
-
         }
     }
-} 
+}
