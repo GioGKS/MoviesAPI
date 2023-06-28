@@ -13,8 +13,8 @@ using NetTopologySuite.Geometries;
 namespace MoviesAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230625195903_MovieAndFriends")]
-    partial class MovieAndFriends
+    [Migration("20230628182241_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
