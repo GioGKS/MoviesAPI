@@ -1,4 +1,4 @@
-## EBook App Web API 
+## Movies App Web API 
 - RESTful API for user & products management.
 - CRUD oprations.
 
