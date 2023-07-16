@@ -1,4 +1,4 @@
-## EBook App Web API 
+## Movies App Web API 
 - RESTful API for user & products management.
 - CRUD oprations.
 
@@ -34,7 +34,7 @@ To install the MoviesAPI, follow these steps:
 - Open the file appsettings.json located in the MoviesAPI project folder and modify the following connection string with your own Microsoft SQL Server database connection string:
 ```bash
 "ConnectionStrings": {
-  "ConnectionString": "Server=<your-server-name>;Database=EBookDB;Trusted_Connection = True;TrustServerCertificate= True;"
+  "ConnectionString": "Server=<your-server-name>;Database=MoviesAPI;Trusted_Connection = True;TrustServerCertificate= True;"
 }
 ```
 - Open the file <strong> appsettings.json > appsettings.Development.json </strong> located in the MoviesAPI project folder and set the following key:
